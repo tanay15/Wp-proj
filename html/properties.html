@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Properties - Your Real Estate</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="chatbot.css">
+    
+</head>
+<body>
+    <header>
+        <div class="logo">Property Seek</div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="properties.html" class="active">Properties</a></li>
+                <li><a href="agents.html">Agents</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="blog.html">Blog</a></li>
+                <li><a href="about.html">About</a></li>
+                <li id="auth-links">
+                    <a href="login.html">Sign In</a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div class="container" style="padding: 2rem 5%;">
+            <h1>All Available Properties in Mumbai</h1>
+            
+            <div class="search-filters">
+                <input type="text" id="search-location" placeholder="Search by location...">
+                <select id="property-type">
+                    <option value="">Property Type</option>
+                    <option value="apartment">Apartment</option>
+                    <option value="villa">Villa</option>
+                    <option value="plot">Plot</option>
+                    <option value="commercial">Commercial</option>
+                </select>
+                <select id="property-status">
+                    <option value="">Status</option>
+                    <option value="sale">For Sale</option>
+                    <option value="rent">For Rent</option>
+                </select>
+                <button id="filter-button">Filter</button>
+            </div>
+
+            <div class="property-grid" id="properties-grid">
+                <!-- Properties will be loaded dynamically -->
+            </div>
+
+            <div class="pagination">
+                <span class="current">1</span>
+                <a href="#">2</a>
+                <a href="#">Next &raquo;</a>
+            </div>
+        </div>
+
+       
+          <!-- Chatbot HTML to be added to your pages -->
+<div class="chat-widget">
+    <button id="chat-button" class="chat-button">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+      </svg>
+      <span>Chat with us</span>
+    </button>
+    
+    <div id="chat-container" class="chat-container">
+      <div class="chat-header">
+        <h3>Property Seek Assistant</h3>
+        <button id="close-chat" class="close-chat">×</button>
+      </div>
+      <div id="chat-messages" class="chat-messages">
+        <div class="message bot-message">
+          Hello! I'm your Property Seek assistant. How can I help you today?
+        </div>
+      </div>
+      <form id="chat-form" class="chat-form">
+        <input type="text" id="user-input" placeholder="Type your message..." autocomplete="off">
+        <button type="submit">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="22" y1="2" x2="11" y2="13"></line>
+            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+          </svg>
+        </button>
+      </form>
+    </div>
+  </div>
+        
+    </main>
+
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <p>&copy; <span id="current-year"></span> Property Seek - Mumbai</p>
+                <div class="footer-links">
+                    <a href="#">Privacy Policy</a> | 
+                    <a href="#">Terms of Service</a> | 
+                    <a href="#">Sitemap</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="main.js"></script>
+    <script src="auth.js"></script>
+    <script src="properties.js"></script>
+    <script src="chatbot.js"></script>
+</body>
+</html>

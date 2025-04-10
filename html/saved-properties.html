@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saved Properties - Property Seek</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="logo">Property Seek</div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="properties.html">Properties</a></li>
+                <li><a href="agents.html">Agents</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="blog.html">Blog</a></li>
+                <li><a href="about.html">About</a></li>
+                <li id="auth-links">
+                    <!-- Will be populated by auth.js -->
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <main style="padding: 2rem 5%;">
+        <div class="container">
+            <h1>Your Saved Properties</h1>
+            
+            <div id="saved-properties-grid" class="property-grid">
+                <!-- Saved properties will be loaded dynamically -->
+            </div>
+            
+            <div id="no-saved-properties" style="text-align: center; margin: 3rem 0; display: none;padding-bottom: 5%;">
+                <p>You haven't saved any properties yet.</p>
+                <a href="properties.html" style="display: inline-block; margin-top: 1rem; padding: 10px 20px; background-color: var(--accent-color); color: var(--white); border-radius: var(--border-radius);">
+                    Browse Properties
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container" style="margin-bottom: 0%;">
+            <div class="footer-content">
+                <p>&copy; <span id="current-year"></span> Property Seek - Mumbai</p>
+                <div class="footer-links">
+                    <a href="#">Privacy Policy</a> | 
+                    <a href="#">Terms of Service</a> | 
+                    <a href="#">Sitemap</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="main.js"></script>
+    <script src="auth.js"></script>
+    <script src="properties.js"></script>
+    <script>
+        // Check if user is logged in
+        document.addEventListener('DOMContentLoaded', function() {
+            const user = JSON.parse(localStorage.getItem('user'));
+            if (!user) {
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            // Load saved properties
+            loadSavedProperties();
+        });
+        
+        function loadSavedProperties() {
+            const user = JSON.parse(localStorage.getItem('user'));
+            const savedPropertiesGrid = document.getElementById('saved-properties-grid');
+            const noSavedProperties = document.getElementById('no-saved-properties');
+            
+            if (!user || !user.savedProperties || user.savedProperties.length === 0) {
+                savedPropertiesGrid.style.display = 'none';
+                noSavedProperties.style.display = 'block';
+                return;
+            }
+            
+            savedPropertiesGrid.style.display = 'grid';
+            noSavedProperties.style.display = 'none';
+            
+            // Get saved properties from data
+            const savedProperties = properties.filter(property => 
+                user.savedProperties.includes(property.id)
+            );
+            
+            // Display saved properties
+            savedPropertiesGrid.innerHTML = '';
+            savedProperties.forEach(property => {
+                const propertyCard = createPropertyCard(property, true);
+                savedPropertiesGrid.appendChild(propertyCard);
+            });
+        }
+    </script>
+</body>
+</html>

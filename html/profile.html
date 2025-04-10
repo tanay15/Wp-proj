@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Profile - Property Seek</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="logo">Property Seek</div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="properties.html">Properties</a></li>
+                <li><a href="agents.html">Agents</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="blog.html">Blog</a></li>
+                <li><a href="about.html">About</a></li>
+                <li id="auth-links">
+                    <!-- Will be populated by auth.js -->
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <main style="padding: 2rem 5%;">
+        <div class="container">
+            <h1>Your Profile</h1>
+            
+            <div style="display: flex; gap: 2rem; flex-wrap: wrap;">
+                <div style="flex: 1 1 300px;">
+                    <div style="background-color: var(--white); border-radius: var(--border-radius); padding: 2rem; box-shadow: var(--box-shadow); margin-bottom: 2rem;">
+                        <h2>Profile Information</h2>
+                        <form id="profile-form">
+                            <input type="text" name="name" id="profile-name" placeholder="Full Name" required>
+                            <input type="email" name="email" id="profile-email" placeholder="Email Address" required disabled>
+                            <input type="tel" name="phone" id="profile-phone" placeholder="Phone Number">
+                            <button type="submit">Update Profile</button>
+                        </form>
+                    </div>
+                    
+                    <div style="background-color: var(--white); border-radius: var(--border-radius); padding: 2rem; box-shadow: var(--box-shadow);">
+                        <h2>Change Password</h2>
+                        <form id="password-form">
+                            <input type="password" name="currentPassword" placeholder="Current Password" required>
+                            <input type="password" name="newPassword" placeholder="New Password" required>
+                            <input type="password" name="confirmPassword" placeholder="Confirm New Password" required>
+                            <button type="submit">Change Password</button>
+                        </form>
+                    </div>
+                </div>
+                
+                <div style="flex: 1 1 300px;">
+                    <div style="background-color: var(--white); border-radius: var(--border-radius); padding: 2rem; box-shadow: var(--box-shadow); margin-bottom: 2rem;">
+                        <h2>Quick Links</h2>
+                        <ul style="list-style: none; padding: 0;">
+                            <li style="margin-bottom: 1rem;">
+                                <a href="saved-properties.html" style="display: block; padding: 10px; background-color: var(--light-gray); border-radius: var(--border-radius);">
+                                    Your Saved Properties (<span id="saved-count">0</span>)
+                                </a>
+                            </li>
+                            <li style="margin-bottom: 1rem;">
+                                <a href="contact.html" style="display: block; padding: 10px; background-color: var(--light-gray); border-radius: var(--border-radius);">
+                                    Contact Us
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div style="background-color: var(--white); border-radius: var(--border-radius); padding: 2rem; box-shadow: var(--box-shadow);">
+                        <h2>Account Actions</h2>
+                        <button id="logout-button" style="background-color: var(--secondary-color); width: 100%;">
+                            Logout
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <p>&copy; <span id="current-year"></span> Property Seek - Mumbai</p>
+                <div class="footer-links">
+                    <a href="#">Privacy Policy</a> | 
+                    <a href="#">Terms of Service</a> | 
+                    <a href="#">Sitemap</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="main.js"></script>
+    <script src="auth.js"></script>
+    <script>
+        // Check if user is logged in
+        document.addEventListener('DOMContentLoaded', function() {
+            const user = JSON.parse(localStorage.getItem('user'));
+            if (!user) {
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            // Populate profile form
+            document.getElementById('profile-name').value = user.name || '';
+            document.getElementById('profile-email').value = user.email || '';
+            document.getElementById('profile-phone').value = user.phone || '';
+            
+            // Update saved count
+            document.getElementById('saved-count').textContent = user.savedProperties ? user.savedProperties.length : 0;
+            
+            // Handle profile update
+            document.getElementById('profile-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const updatedUser = {
+                    ...user,
+                    name: document.getElementById('profile-name').value,
+                    phone: document.getElementById('profile-phone').value
+                };
+                localStorage.setItem('user', JSON.stringify(updatedUser));
+                alert('Profile updated successfully');
+            });
+            
+            // Handle password update
+            document.getElementById('password-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const currentPassword = e.target.elements.currentPassword.value;
+                const newPassword = e.target.elements.newPassword.value;
+                const confirmPassword = e.target.elements.confirmPassword.value;
+                
+                if (newPassword !== confirmPassword) {
+                    alert('Passwords do not match');
+                    return;
+                }
+                
+                alert('Password updated successfully');
+                e.target.reset();
+            });
+            
+            // Handle logout
+            document.getElementById('logout-button').addEventListener('click', function() {
+                localStorage.removeItem('user');
+                window.location.href = 'index.html';
+            });
+        });
+    </script>
+</body>
+</html>
