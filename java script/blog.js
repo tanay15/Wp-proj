@@ -26,7 +26,7 @@ const blogPosts = [
             
             <p>Each of these neighborhoods has its unique charm and advantages. When choosing a neighborhood for your family, consider factors like proximity to work, quality of schools, availability of healthcare facilities, and recreational options.</p>
         `,
-        image: "/placeholder.svg?height=600&width=800"
+        image: "/css/final images/random3.svg?height=400&width=400"
     },
     {
         id: 2,
@@ -59,7 +59,7 @@ const blogPosts = [
             
             <p>As with any investment, thorough research and due diligence are essential before making a decision. Consider factors like location, developer reputation, infrastructure development, and future growth prospects.</p>
         `,
-        image: "/placeholder.svg?height=600&width=800"
+        image: "/html/random2.svg?height=400&width=400" 
     },
     {
         id: 3,
@@ -111,7 +111,7 @@ const blogPosts = [
             
             <p>Buying a home is a significant financial and emotional investment. Take your time, do thorough research, and seek professional advice when needed to make an informed decision.</p>
         `,
-        image: "/placeholder.svg?height=600&width=800"
+        image: "/html/random.svg?height=400&width=400" 
     }
 ];
 
@@ -131,39 +131,15 @@ function truncateText(text, maxLength) {
     return text;
 }
 
-// Load blog posts on the blog page
-document.addEventListener('DOMContentLoaded', function() {
-    // Load all blog posts on blog page
-    const blogPostsGrid = document.getElementById('blog-posts-grid');
-    if (blogPostsGrid) {
-        blogPostsGrid.innerHTML = '';
-        blogPosts.forEach(post => {
-            const blogCard = createBlogCard(post);
-            blogPostsGrid.appendChild(blogCard);
-        });
-    }
-    
-    // Load blog post on blog post page
-    const blogPostContent = document.getElementById('blog-post-content');
-    if (blogPostContent) {
-        const postId = parseInt(getUrlParameter('id'));
-        const post = blogPosts.find(p => p.id === postId);
-        
-        if (post) {
-            displayBlogPost(post, blogPostContent);
-        } else {
-            blogPostContent.innerHTML = '<p>Blog post not found.</p>';
-        }
-    }
-});
-
 // Create blog card
 function createBlogCard(post) {
     const card = document.createElement('div');
     card.className = 'blog-card';
     
     card.innerHTML = `
-        <div class="blog-image" style="background-image: url('${post.image}')"></div>
+        <div class="blog-image">
+            <img src="${post.image}" alt="${post.title}" onerror="this.src='./images/placeholder.svg'">
+        </div>
         <div class="blog-details">
             <p class="blog-date">${post.date} | By ${post.author}</p>
             <h3 class="blog-title">${post.title}</h3>
@@ -177,19 +153,56 @@ function createBlogCard(post) {
 
 // Display blog post
 function displayBlogPost(post, container) {
+    document.title = `${post.title} - Property Seek Blog`;
+    
     container.innerHTML = `
-        <div class="blog-post-header">
-            <h1>${post.title}</h1>
-            <div class="blog-post-meta">
-                <span>Published on: ${post.date}</span>
-                <span>By: ${post.author}</span>
+        <article>
+            <div class="blog-post-header">
+                <h1>${post.title}</h1>
+                <div class="blog-post-meta">
+                    <span>Published on: ${post.date}</span>
+                    <span>By: ${post.author}</span>
+                </div>
             </div>
-        </div>
-        
-        <div class="blog-post-image" style="background-image: url('${post.image}')"></div>
-        
-        <div class="blog-post-content">
-            ${post.content}
-        </div>
+            
+            <div class="blog-post-image">
+                <img src="${post.image}" alt="${post.title}" onerror="this.src='./images/placeholder.svg'">
+            </div>
+            
+            <div class="blog-post-content">
+                ${post.content}
+            </div>
+        </article>
     `;
 }
+
+// Initialize blog functionality
+document.addEventListener('DOMContentLoaded', function() {
+    // Clear any sample content
+    const blogPostsGrid = document.getElementById('blog-posts-grid');
+    const blogPostContent = document.getElementById('blog-post-content');
+    
+    if (blogPostsGrid) {
+        blogPostsGrid.innerHTML = ''; // Clear sample content
+        blogPosts.forEach(post => {
+            const blogCard = createBlogCard(post);
+            blogPostsGrid.appendChild(blogCard);
+        });
+    }
+    
+    if (blogPostContent) {
+        const postId = parseInt(getUrlParameter('id'));
+        const post = blogPosts.find(p => p.id === postId);
+        
+        if (post) {
+            displayBlogPost(post, blogPostContent);
+        } else {
+            blogPostContent.innerHTML = `
+                <div class="blog-post-header">
+                    <h1>Blog Post Not Found</h1>
+                    <p>The requested blog post could not be found. <a href="blog.html">Return to blog list</a></p>
+                </div>
+            `;
+        }
+    }
+});

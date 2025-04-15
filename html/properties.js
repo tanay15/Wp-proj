@@ -640,6 +640,8 @@ const properties = [
   
     // Get similar properties (same type, excluding current property)
     const similarProperties = properties.filter((p) => p.type === property.type && p.id !== property.id).slice(0, 3)
+
+    
   
     propertyDetails.innerHTML = `
         <div class="container">
@@ -1035,6 +1037,51 @@ const properties = [
             }
         `
         document.head.appendChild(styles)
+
+        // Add the tour form submission handler
+        const tourForm = document.getElementById("tour-form");
+        if (tourForm) {
+            tourForm.addEventListener("submit", (e) => handleTourBooking(e, property.id));
+        }
+
+        // Add date validation to prevent past dates
+        const tourDateInput = document.getElementById("tour-date");
+        if (tourDateInput) {
+            const today = new Date().toISOString().split('T')[0];
+            tourDateInput.setAttribute('min', today);
+        }
+
+        // Add phone number validation
+        const tourPhoneInput = document.getElementById("tour-phone");
+        if (tourPhoneInput) {
+            tourPhoneInput.addEventListener('input', function(e) {
+                // Remove any non-digit characters
+                let phone = e.target.value.replace(/\D/g, '');
+                
+                // Format as XXX-XXX-XXXX
+                if (phone.length >= 10) {
+                    phone = phone.slice(0, 10);
+                    phone = phone.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
+                }
+                
+                e.target.value = phone;
+            });
+        }
+
+        // Add email validation
+        const tourEmailInput = document.getElementById("tour-email");
+        if (tourEmailInput) {
+            tourEmailInput.addEventListener('input', function(e) {
+                const email = e.target.value;
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                
+                if (!emailRegex.test(email)) {
+                    tourEmailInput.setCustomValidity('Please enter a valid email address');
+                } else {
+                    tourEmailInput.setCustomValidity('');
+                }
+            });
+        }
     }
 
     // Initialize slideshow
@@ -1086,12 +1133,6 @@ const properties = [
     })
 
     document.getElementById("calculate-mortgage").addEventListener("click", calculateMortgage)
-
-    document.getElementById("tour-form").addEventListener("submit", function(e) {
-        e.preventDefault()
-        alert("Your tour has been scheduled! We will confirm shortly.")
-        this.reset()
-    })
 
     // Calculate mortgage on page load
     calculateMortgage()
@@ -1233,4 +1274,50 @@ function getPropertyMapIframe(propertyId) {
   window.changeMainImage = changeMainImage
   window.calculateMortgage = calculateMortgage
   window.initMap = initMap
+  
+  // Function to handle tour booking
+  async function handleTourBooking(event, propertyId) {
+    event.preventDefault();
+    
+    const token = localStorage.getItem("token");
+    if (!token) {
+      const currentPath = window.location.pathname + window.location.search;
+      window.location.href = `login.html?redirect=${encodeURIComponent(currentPath)}`;
+      return;
+    }
+
+    // Get form data
+    const tourData = {
+      propertyId: propertyId,
+      tourDate: document.getElementById("tour-date").value,
+      tourTime: document.getElementById("tour-time").value,
+      name: document.getElementById("tour-name").value,
+      email: document.getElementById("tour-email").value,
+      phone: document.getElementById("tour-phone").value,
+      message: document.getElementById("tour-message").value || ''
+    };
+
+    try {
+      const response = await fetch('http://localhost:3000/api/book-tour', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(tourData)
+      });
+
+      const data = await response.json();
+      
+      if (data.success) {
+        alert("Tour scheduled successfully! We will contact you shortly to confirm the details.");
+        document.getElementById("tour-form").reset();
+      } else {
+        alert(data.message || "Failed to schedule tour. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error scheduling tour:", error);
+      alert("An error occurred while scheduling the tour. Please try again.");
+    }
+  }
   

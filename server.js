@@ -353,6 +353,59 @@ app.post("/api/chatbot", async (req, res) => {
   }
 });
 
+app.post("/api/book-tour", async (req, res) => {
+  try {
+    const { propertyId, tourDate, tourTime, name, email, phone, message } = req.body;
+    const token = req.headers.authorization?.split(" ")[1];
+
+    if (!token) {
+      return res.status(401).json({ success: false, message: "No token provided" });
+    }
+
+    // Verify token
+    const decoded = jwt.verify(token, JWT_SECRET);
+
+    // Validate input
+    if (!propertyId || !tourDate || !tourTime || !name || !email || !phone) {
+      return res.status(400).json({ success: false, message: "All required fields must be provided" });
+    }
+
+    // Insert tour booking into database
+    const { data, error } = await supabase
+      .from("tour_bookings")
+      .insert([{
+        user_id: decoded.id, // This is now a UUID
+        property_id: propertyId,
+        customer_email: email,
+        tour_date: tourDate,
+        tour_time: tourTime,
+        customer_name: name,
+        customer_phone: phone,
+        message: message || null,
+        booked_tour: true,
+        created_at: new Date().toISOString()
+      }])
+      .select();
+
+    if (error) {
+      console.error("Error booking tour:", error);
+      return res.status(500).json({ success: false, message: "Error booking tour" });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Tour booked successfully",
+      booking: data[0]
+    });
+  } catch (error) {
+    console.error("Server error:", error);
+    if (error.name === "JsonWebTokenError") {
+      return res.status(401).json({ success: false, message: "Invalid token" });
+    }
+    return res.status(500).json({ success: false, message: "Server error" });
+  }
+});
+
 // Start server
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)

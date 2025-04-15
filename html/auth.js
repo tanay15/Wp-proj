@@ -1,6 +1,18 @@
 // Base URL of your backend server
 const API_BASE_URL = 'http://localhost:3000/api';
 
+// Password validation function
+function isValidPassword(password) {
+    // Regex to check for:
+    // - At least 8 characters
+    // - At least 1 uppercase letter
+    // - At least 1 lowercase letter
+    // - At least 1 number
+    // - At least 1 special character
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?])[A-Za-z\d!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]{8,}$/;
+    return passwordRegex.test(password);
+}
+
 // Function to handle login
 async function handleLogin(event) {
     event.preventDefault();
@@ -50,6 +62,13 @@ async function handleRegister(event) {
     const email = document.querySelector('input[name="email"]').value;
     const password = document.querySelector('input[name="password"]').value;
     const errorMessage = document.getElementById('error-message');
+
+    // Validate password
+    if (!isValidPassword(password)) {
+        errorMessage.style.display = 'block';
+        errorMessage.textContent = 'Password must contain at least 8 characters, including 1 uppercase letter, 1 lowercase letter, 1 number, and 1 special character.';
+        return;
+    }
 
     try {
         const response = await fetch(`${API_BASE_URL}/register`, {

@@ -26,8 +26,8 @@ const blogPosts = [
             
             <p>Each of these neighborhoods has its unique charm and advantages. When choosing a neighborhood for your family, consider factors like proximity to work, quality of schools, availability of healthcare facilities, and recreational options.</p>
         `,
-        image: "/placeholder.svg?height=600&width=800"
-    },
+        image: "/html/random2.svg?height=400&width=400" 
+        },
     {
         id: 2,
         title: "Investment Opportunities in Mumbai Real Estate 2023",
@@ -59,7 +59,7 @@ const blogPosts = [
             
             <p>As with any investment, thorough research and due diligence are essential before making a decision. Consider factors like location, developer reputation, infrastructure development, and future growth prospects.</p>
         `,
-        image: "/placeholder.svg?height=600&width=800"
+        image:"/css/final images/random.svg?height=400&width=400"
     },
     {
         id: 3,
@@ -111,7 +111,7 @@ const blogPosts = [
             
             <p>Buying a home is a significant financial and emotional investment. Take your time, do thorough research, and seek professional advice when needed to make an informed decision.</p>
         `,
-        image: "/placeholder.svg?height=600&width=800"
+        image: "/css/final images/random.svg?height=400&width=400"
     }
 ];
 

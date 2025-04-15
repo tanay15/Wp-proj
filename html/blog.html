@@ -6,6 +6,34 @@
     <title>Blog - Your Real Estate</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap">
     <link rel="stylesheet" href="style.css">
+    <style>
+        .blog-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 2rem 0;
+        }
+        .blog-card {
+            background: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .blog-image {
+            height: 250px;
+            width: 100%;
+            overflow: hidden;
+            background-color: #f5f5f5;
+        }
+        .blog-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .blog-details {
+            padding: 1.5rem;
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -29,7 +57,18 @@
         <div class="container">
             <h1>Real Estate Insights & News</h1>
             <div class="blog-list" id="blog-posts-grid">
-                <!-- Blog posts will be loaded dynamically -->
+                <!-- Sample blog card structure -->
+                <div class="blog-card">
+                    <div class="blog-image">
+                    </div>
+                    <div class="blog-details">
+                        <p class="blog-date">Date | Author</p>
+                        <h3 class="blog-title">Blog Title</h3>
+                        <p class="blog-excerpt">Blog excerpt goes here...</p>
+                        <a href="#" class="blog-read-more">Read More</a>
+                    </div>
+                </div>
+                <!-- More blog cards will be loaded dynamically -->
             </div>
             <div class="pagination">
                 <span class="current">1</span>
