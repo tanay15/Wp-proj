@@ -148,5 +148,5 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 For any queries or suggestions, please reach out to us at info@propertyseek.com. 
 
 
-##NOTE
+## NOTE
 .env file has not been uploaded.!!!!due to OBVIOUS reasons.
